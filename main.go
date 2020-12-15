@@ -1,20 +1,25 @@
 package main
+
 import (
-"github.com/gorilla/mux"
-"log"
-"net/http"
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-s := mux.NewRouter()
 
-//Routes
-s.HandleFunc("/createProfile", createProfile).Methods("POST")
-//s.HandleFunc("/getAllUsers", getAllUsers).Methods("GET")
+	fmt.Println("Starting the application ....")
+	s := mux.NewRouter()
 
-//s.HandleFunc("/updateProfile", updateProfile).Methods("PUT")
+	//Routes
+	s.HandleFunc("/createProfile", createProfile).Methods("POST")
+	//s.HandleFunc("/getAllUsers", getAllUsers).Methods("GET")
 
-log.Fatal(http.ListenAndServe(":8000", s)) 
+	s.HandleFunc("/updateProfile", updateProfile).Methods("PUT")
+
+	log.Fatal(http.ListenAndServe(":8000", s))
 }
 
-//run the program as -- go run main.go db.go controller.go
+//run the program as -- go run main.go db.go controllers.go
