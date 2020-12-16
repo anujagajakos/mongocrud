@@ -17,4 +17,3 @@ s.HandleFunc("/createProfile", createProfile).Methods("POST")
 log.Fatal(http.ListenAndServe(":8000", s)) 
 }
 
-//run the program as -- go run main.go db.go controller.go
