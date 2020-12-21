@@ -22,4 +22,4 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8000", s))
 }
 
-//run the program as -- go run main.go db.go controllers.go
+
