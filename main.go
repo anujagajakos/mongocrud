@@ -7,7 +7,7 @@ func main() {
 
 	//Routes
 	s.HandleFunc("/createProfile", createProfile).Methods("POST")
-	//s.HandleFunc("/getAllUsers", getAllUsers).Methods("GET")
+	s.HandleFunc("/getAllUsers", getAllUsers).Methods("GET")
 
 	s.HandleFunc("/updateProfile", updateProfile).Methods("PUT")
 
