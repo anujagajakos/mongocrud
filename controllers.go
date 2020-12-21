@@ -7,6 +7,11 @@ import (
 	"log"
 	"net/http"
 
+	
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	//"go.mongodb.org/mongo-driver/mongo/options"
+)
 
 
 var userCollection = db().Database("goTest").Collection("userinfo")
@@ -53,5 +58,40 @@ func createProfile(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	json.NewEncoder(w).Encode(insertResult.InsertedID)
+}
+func updateProfile(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	//declare a new user struct
+	var person user
+	var updatedResult user
+	//decode body of request as struct user
+	err := json.NewDecoder(r.Body).Decode(&person)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	// fmt.Fprintf(w, person.Name)
+	result, err := userCollection.UpdateOne(
+		context.TODO(),
+		bson.M{"name": person.Name},
+		bson.D{
+			{"$set", bson.D{{"city", person.City}}},
+			{"$set", bson.D{{"age", person.Age}}},
+		},
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//dispaly modified count
+	fmt.Printf("Updated %v Documents!\n", result.ModifiedCount)
+	//send response of the updated user
+	//find user
+	err = userCollection.FindOne(context.TODO(), bson.M{"name": person.Name}).Decode(&updatedResult)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	//send response
+	json.NewEncoder(w).Encode(updatedResult)
 }
 
