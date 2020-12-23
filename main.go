@@ -6,7 +6,15 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	//"encoding/json"
+   // "strings"
+
+   // "github.com/dgrijalva/jwt-go"
+  // "github.com/gorilla/context"
+    //"github.com/mitchellh/mapstructure"
 )
+
+
 
 func main() {
 
@@ -15,7 +23,7 @@ func main() {
 
 	//Routes
 	s.HandleFunc("/createProfile", createProfile).Methods("POST")
-	s.HandleFunc("/getAllUsers", getAllUsers).Methods("GET")
+	s.HandleFunc("/getAllUsers", ValidateMiddleware(getAllUsers)).Methods("GET")
 
 	s.HandleFunc("/updateProfile", updateProfile).Methods("PUT")
 
