@@ -9,4 +9,5 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/mitchellh/mapstructure v1.4.0 // indirect
 	go.mongodb.org/mongo-driver v1.4.4
+	gopkg.in/go-playground/validator.v9 v9.31.0 // indirect
 )

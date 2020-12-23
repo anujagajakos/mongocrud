@@ -18,16 +18,17 @@ import (
 
    // "github.com/dgrijalva/jwt-go"
   //"github.com/gorilla/context"
-    //"github.com/mitchellh/mapstructure"
+	//"github.com/mitchellh/mapstructure"
+	"github.com/go-playground/validator/v10"
 
 )
 
 var userCollection = db().Database("goTest").Collection("userinfo")
 
 type user struct {
-	Name string `json:"name"`
-	City string `json:"city"`
-	Age  int    `json:"age"`
+	Name string `json:"name"  validate:"required"`
+	City string `json:"city"  validate:"required"`
+	Age  int    `json:"age"  validate:"required"`
 }
 
 
@@ -98,6 +99,14 @@ func createProfile(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Print(err)
 	}
+
+	validate := validator.New()
+    errr := validate.Struct(person)
+    if errr != nil {
+        fmt.Fprintf(w, "Field cannot be Empty")
+	} 
+	
+	if errr == nil{
 	insertResult, err := userCollection.InsertOne(context.TODO(), person)
 	if err != nil {
 		log.Fatal(err)
@@ -111,8 +120,9 @@ func createProfile(w http.ResponseWriter, r *http.Request) {
     tokenString, error := token.SignedString([]byte("secret"))
     if error != nil {
         fmt.Println(error)
-    }
-    json.NewEncoder(w).Encode(JwtToken{Token: tokenString})
+	
+	json.NewEncoder(w).Encode(JwtToken{Token: tokenString}) } }
+	
 }
 
 
